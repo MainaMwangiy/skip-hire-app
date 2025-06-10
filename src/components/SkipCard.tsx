@@ -17,8 +17,8 @@ export const SkipCard: React.FC<SkipCardProps> = ({ skip, isSelected, onClick })
             onClick={onClick}
             className={`p-4 rounded-lg border cursor-pointer transition-all duration-200 hover:shadow-md
                 ${isSelected
-                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 shadow-md'
-                    : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500'}`}
+                    ? 'border-green-600 bg-green-50 dark:bg-green-900/20 shadow-md'
+                    : 'border-blue-300 dark:border-blue-600 bg-blue-50 dark:bg-blue-900/10 hover:border-blue-400 dark:hover:border-blue-500'}`}
         >
             <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center">
@@ -61,11 +61,12 @@ export const SkipCard: React.FC<SkipCardProps> = ({ skip, isSelected, onClick })
                 </div>
             </div>
 
-            {isSelected && (
-                <button className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium transition-colors">
-                    Select This Skip
-                </button>
-            )}
+            <button
+                className={`w-full mt-4 py-2 px-4 rounded-lg font-medium transition-colors text-white
+                    ${isSelected ? 'bg-green-600 hover:bg-green-700' : 'bg-blue-500 hover:bg-blue-600'}`}
+            >
+                {isSelected ? 'Selected' : 'Select This Skip'}
+            </button>
         </div>
     );
 };
