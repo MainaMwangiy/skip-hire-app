@@ -1,103 +1,112 @@
-import Image from "next/image";
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { Stepper } from '@/components/Stepper';
+import { FilterSection } from '@/components/FilterSection';
+import { SkipCard } from '@/components/SkipCard';
+import { SkipDetails } from '@/components/SkipDetails';
+import { Footer } from '@/components/Footer';
+import { useSkipFilter } from '@/hooks/useSkipFilter';
+import { fetchSkipsData } from '@/lib/data';
+import { Skip } from '@/types/skip';
+import { Truck } from 'lucide-react';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [skips, setSkips] = useState<Skip[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { filters, setFilters, filteredSkips } = useSkipFilter(skips);
+  const [selectedSkip, setSelectedSkip] = useState<Skip | null>(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    const loadSkips = async () => {
+      try {
+        const data = await fetchSkipsData();
+        setSkips(data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Failed to load skips:', error);
+        setLoading(false);
+      }
+    };
+
+    loadSkips();
+  }, []);
+
+  useEffect(() => {
+    if (filteredSkips.length > 0 && (!selectedSkip || !filteredSkips.find(s => s.id === selectedSkip.id))) {
+      setSelectedSkip(filteredSkips[0]);
+    }
+  }, [filteredSkips, selectedSkip]);
+
+  const handleBack = () => {
+    console.log('Going back to previous step');
+  };
+
+  const handleContinue = () => {
+    if (selectedSkip) {
+      console.log('Continuing with selected skip:', selectedSkip);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <Truck className="w-12 h-12 mx-auto mb-4 text-blue-500 animate-pulse" />
+          <p className="text-gray-600 dark:text-gray-400">Loading skip options...</p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+      <Stepper />
+
+      <div className="max-w-7xl mx-auto px-4 py-6">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Choose Your Skip Size</h1>
+          <p className="text-gray-600 dark:text-gray-400">Select the perfect skip for your project from our available options</p>
+        </div>
+        <FilterSection filters={filters} setFilters={setFilters} />
+        <div className="flex flex-col lg:flex-row gap-6">
+          <div className="w-full lg:w-80 xl:w-96">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+              <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Available Skips</h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400">{filteredSkips.length} options</p>
+              </div>
+              <div className="max-h-[600px] overflow-y-auto">
+                {filteredSkips.length === 0 ? (
+                  <div className="p-8 text-center">
+                    <div className="text-gray-400 dark:text-gray-500 mb-2">
+                      <Truck className="w-12 h-12 mx-auto" />
+                    </div>
+                    <p className="text-gray-500 dark:text-gray-400">No skips match your filters</p>
+                  </div>
+                ) : (
+                  <div className="p-4 space-y-3">
+                    {filteredSkips.map((skip) => (
+                      <SkipCard
+                        key={skip.id}
+                        skip={skip}
+                        isSelected={selectedSkip?.id === skip.id}
+                        onClick={() => setSelectedSkip(skip)}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          <SkipDetails skip={selectedSkip} />
+        </div>
+      </div>
+      <Footer
+        selectedSkip={selectedSkip}
+        onBack={handleBack}
+        onContinue={handleContinue}
+      />
     </div>
   );
 }
