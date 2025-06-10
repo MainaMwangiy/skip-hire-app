@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SKIP-HIRE-APP
 
-## Getting Started
+## Project Overview
+This project is a redesigned version of the "Choose Your Skip Size" page from https://wewantwaste.co.uk/, developed as part of a React coding challenge. The goal was to create a completely different UI while maintaining the original functionality, focusing on clean, maintainable code, responsiveness, and improved UI/UX. The redesign includes a modern stepper navigation, interactive skip cards, detailed skip information, and a filter section, optimized for both mobile and desktop browsers.
 
-First, run the development server:
+## Approach
+### Technology Stack
+- **React**: Used for building the front-end with a component-based architecture.
+- **Next.js**: Leveraged for server-side rendering and static site generation.
+- **Tailwind CSS**: Applied for rapid UI development with a utility-first approach.
+- **Lucide React**: Utilized for icons to enhance visual feedback.
+- **TypeScript**: Employed for type safety and better code maintainability.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Design Decisions
+- **Stepper Component**: Added a horizontal stepper to guide users through the process, with visual indicators for completed and current steps.
+- **Responsive Layout**: Implemented a flexible grid system to ensure the interface adapts seamlessly to mobile and desktop screens.
+- **Filter Section**: Introduced a filter panel with dropdowns for skip size, price range, road placement, and waste type to enhance user control.
+- **Skip Cards**: Designed interactive cards for skip selection with hover effects and a selected state indicator.
+- **Skip Details**: Created a detailed view with categorized sections (e.g., capacity, placement) using cards and icons for better readability.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Data Integration
+- Fetched skip data from https://app.wewantwaste.co.uk/api/skips/by-location?postcode=NR32&area=Lowestoft to populate the skip options dynamically.
+- Used a custom hook (`useSkipFilter`) to manage filtering logic based on user selections.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Code Structure
+- Organized components in the `src/components` directory (e.g., `Stepper`, `FilterSection`, `SkipCard`, `SkipDetails`, `Footer`).
+- Defined types in `src/types/skip.ts` for type safety.
+- Managed global styles in `src/globals.css` with Tailwind CSS configuration.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### UI/UX Improvements
+- Enhanced visual hierarchy with color-coded sections and icons.
+- Added tooltips and detailed insights (e.g., popularity, value rating) to inform user decisions.
+- Ensured accessibility with proper contrast and focus states.
 
-## Learn More
+## Installation
+1. Clone the repository: `git clone https://github.com/MainaMwangiy/skip-hire-app`
+2. Navigate to the project directory: `cd SKIP-HIRE-APP`
+3. Install dependencies: `npm install` or `yarn install`
+4. Run the development server: `npm run dev` or `yarn dev`
+5. Open http://localhost:3000 to view the app.
 
-To learn more about Next.js, take a look at the following resources:
+## Usage
+- Use the filter options to narrow down skip choices.
+- Click a skip card to view detailed information and select it.
+- Navigate using the back and continue buttons in the footer.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Screenshots
+- **Stepper and Filter Section**: ![Stepper and Filter Section](image.png)
+- **Skip Cards and Details**: ![Skip Cards and Details](image-1.png)
+- **Footer**: ![Footer](image-2.png)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Submission
+- **GitHub Repository**: [GitHub Link](https://github.com/MainaMwangiy/skip-hire-app)
+- **Sandbox Link**: [SandBox Link](https://codesandbox.io/p/github/MainaMwangiy/skip-hire-app/master)
+- Submitted via https://forms.gle/N6nKLgW8CMqZ2eFY8 within 72 hours.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Questions
+Feel free to reach out with any questions!
